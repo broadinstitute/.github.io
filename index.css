@@ -1,1 +1,56 @@
+div.container {
+    overflow: scroll;
+    height: 800px;
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+/*style table body elements to be a consistent size*/
+tbody th,
+tbody td {
+    border: 1px solid black;
+    /*width: 600px; */
+    width: 300px;
+    overflow: hidden;
+}
+
+/*style header so that it stays in place while scrolling through table*/
+thead tr {
+    position: static;
+}
+thead td {
+    color: blue;
+    font-size: larger;
+    /*width: 600px; */
+    width: 300px;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    cursor: pointer;
+}
+
+/*style first column so that it stays in place while scrolling*/
+td:nth-child(1) {
+    width: 150px;
+    position: sticky;
+    left: 0;
+    background-color: white;
+    overflow-x: visible;
+    border: 1 px solid black;
+}
+
+/*add part page with scrollbar to put the checkboxes in */
+.containerb {
+    border:2px solid #ccc; 
+    width: 60%; 
+    height: 500px; 
+    overflow-y: scroll;}
+/*add checkboxes for pkrs available next to section */
+.subbox {
+    color: purple;
+    float: left;
+    padding: 20px;
+}
 
