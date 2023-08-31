@@ -89,52 +89,23 @@
     
     //read in the form submited by the user
     csv_input_form.addEventListener("submit", function (e, doc_text) {  
-        e.preventDefault(); 
-        //read in the data from each file into a string
-        //maybe change to iterator if possible [mps]
-        for (let i = 0; i < csvFile.files.length; i++) {
-            file = csvFile.files[i]
-            const reader = new FileReader();
-            reader.onload = function (e) { 
-                const text = e.target.result; 
-                /*break up string of all file contants by newline, so each 
-                  member of text_lines is a row of the csv*/
-                const text_lines = text.split(/\r?\n/)
-                col_keys_list = []
-                col_values_list = []
-                /*break up one row of the csv into the first column (name) and
-                  the second column (value)*/
-                //add comment about overall array and list_lines
-                for (line of text_lines) {
-                    if (line) {
-                        //seperate line of csv into name of field and field 
-                        //itself
-                        const line_split = line.split(',')
-                        col_keys_list.push(line_split[0])
-                        col_values_list.push(line_split[1])
-                    } 
-                }
-                //on fisrt iteration of loop, save the names of the data fields
-                //from the first file. This will populate the starting header, 
-                //and are assumed to be the same for each file
-                //move this inside for loop to only create on the first iteration
-                if (i == 0) {
-                    data_array_unrounded.push(col_keys_list)
-                }
-                //save the string and list representations of the data from 
-                // the file
-                data_array_unrounded.push(col_values_list)
-                //once all the files have been read in, populate global field
-                //for the table header
-                //might not be used anymore
-                if (i == (csvFile.files.length - 1)) {
-                    data_array_rounded = round_numeric_values(data_array_unrounded)
-                    data_array = data_array_unrounded
+        e.preventDefault();
+        const input = csvFile.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            //split up lines of input by new line character
+            const text = e.target.result;
+            all_contents = text.split(/\r?\n/)
+            for (line of all_contents) {
+                if (line){
+                    //split up each line of the file by , seperator
+                    other_line_list = line.split(',')
+                    data_array_unrounded.push(other_line_list)
                 }
             }
-            reader.readAsText(file); 
-        }
-
+            data_array_rounded = round_numeric_values(data_array_unrounded)
+        };
+        reader.readAsText(input);
     })
 
 </script>
