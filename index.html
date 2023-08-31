@@ -117,9 +117,9 @@
                 //from the first file. This will populate the starting header, 
                 //and are assumed to be the same for each file
                 //move this inside for loop to only create on the first iteration
-                if (i == 0) {
-                    data_array_unrounded.push(col_keys_list)
-                }
+                //if (i == 0) {
+                    //data_array_unrounded.push(col_keys_list)
+                //}
                 //save the string and list representations of the data from 
                 // the file
                 data_array_unrounded.push(col_values_list)
@@ -127,8 +127,10 @@
                 //for the table header
                 //might not be used anymore
                 if (i == (csvFile.files.length - 1)) {
+                    data_array_unrounded.unshift(col_keys_list)
                     data_array_rounded = round_numeric_values(data_array_unrounded)
                     data_array = data_array_unrounded
+                    console.log(data_array_unrounded)
                 }
             }
             reader.readAsText(file); 
