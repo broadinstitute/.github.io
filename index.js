@@ -9,6 +9,7 @@ function write_checkboxes() {
     document.getElementById("filter_options").style.display = "block"
     names_of_fields = data_array[0]
     new_other_format = data_array.slice(1)
+    new_all_rows = []
     for (i = 0; i < names_of_fields.length; i++) {
         let vals = []
         for (j = 0; j < new_other_format.length; j++) {
