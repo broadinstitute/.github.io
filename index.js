@@ -27,7 +27,8 @@ function write_checkboxes() {
     document.getElementById("cboxes").innerHTML += '<input id="cboxes_button" type="button" onClick="display_data' + "('data_selection', 'pkr_selection')" + '" value="Display Data">'
     //loop through the pkrs submitted by the user, and make a checkbox for 
     //each one
-    for (pkr_name of data_as_array_transpose[0]) {
+    console.log(data_array_transpose)
+    for (pkr_name of data_array_transpose[0]) {
         document.getElementById("pkr_cboxes").innerHTML += '<input name="pkr_selection" type="checkbox" value='+ pkr_name + ' checked>'
         document.getElementById("pkr_cboxes").innerHTML += '<label for="pkr_selection">' + pkr_name + '</label>'
         document.getElementById("pkr_cboxes").innerHTML += '<br>'
