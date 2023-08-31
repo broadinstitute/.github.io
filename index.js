@@ -8,16 +8,8 @@ function write_checkboxes() {
     document.getElementById("boxes").style.display = "block"
     document.getElementById("filter_options").style.display = "block"
     names_of_fields = []
-    new_all_rows = []
     names_of_fields = data_array[0]
-    new_other_format = data_array.slice(1)
-    for (i = 0; i < names_of_fields.length; i++) {
-        let vals = []
-        for (j = 0; j < new_other_format.length; j++) {
-            vals.push(new_other_format[j][i])
-        }
-        new_all_rows.push(vals)
-    }
+
     //reset the checkboxes 
     document.getElementById("cboxes").innerHTML = " "
     document.getElementById("pkr_cboxes").innerHTML = " "
@@ -35,7 +27,7 @@ function write_checkboxes() {
     document.getElementById("cboxes").innerHTML += '<input id="cboxes_button" type="button" onClick="display_data' + "('data_selection', 'pkr_selection')" + '" value="Display Data">'
     //loop through the pkrs submitted by the user, and make a checkbox for 
     //each one
-    for (pkr_name of new_all_rows[0]) {
+    for (pkr_name of data_as_array_transpose[0]) {
         document.getElementById("pkr_cboxes").innerHTML += '<input name="pkr_selection" type="checkbox" value='+ pkr_name + ' checked>'
         document.getElementById("pkr_cboxes").innerHTML += '<label for="pkr_selection">' + pkr_name + '</label>'
         document.getElementById("pkr_cboxes").innerHTML += '<br>'

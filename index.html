@@ -85,7 +85,8 @@
     header_row = []
     
     //(change name to data_array) - for rounded, unrounded, and transpose   
-    //array to hold the contents of the file as a list of lists
+    //array to hold the contents of the file as a list of lists      
+    data_array = []
     data_array_unrounded = []
     data_array_rounded = []
     data_array_transpose = []
@@ -96,15 +97,6 @@
     myForm.addEventListener("submit", function (e, doc_text) {  
         e.preventDefault(); 
         
-        /*create an array that, for each provided csv, has one list for the
-          first column (names of fields) and one list for the second (values 
-          of fields)*/ 
-        data_array = []
-        overall_array = []
-        for (let j = 0; j < csvFile.files.length; j++) {
-            overall_array.push([[], []])
-        }
-        
         //read in the data from each file into a string
         for (let i = 0; i < csvFile.files.length; i++) {
             file = csvFile.files[i]
@@ -114,8 +106,6 @@
                 /*break up string of all file contants by newline, so each 
                   member of text_lines is a row of the csv*/
                 const text_lines = text.split(/\r?\n/)
-                col_values = ""
-                col_keys = ""
                 col_keys_list = []
                 col_values_list = []
                 /*break up one row of the csv into the first column (name) and
@@ -126,12 +116,6 @@
                         //seperate line of csv into name of field and field 
                         //itself
                         const line_split = line.split(',')
-                        overall_array[i][0].push(line_split[0])
-                        overall_array[i][1].push(line_split[1])
-                        //take all values from one file and make a string 
-                        col_keys += line_split[0] + ','
-                        col_values += line_split[1] + ','
-                        //take all values from one file and make an array
                         col_keys_list.push(line_split[0])
                         col_values_list.push(line_split[1])
                     } 
@@ -141,34 +125,15 @@
                 //and are assumed to be the same for each file
                 //move this inside for loop to only create on the first iteration
                 if (i == 0) {
-                    data_str.push(col_keys)
                     data_array_unrounded.push(col_keys_list)
                 }
                 //save the string and list representations of the data from 
                 // the file
-                //substring here used to remove the , from the last part of the
-                //string
-                data_str.push(col_values.substring(0, col_values.length - 1))
                 data_array_unrounded.push(col_values_list)
                 //once all the files have been read in, populate global field
                 //for the table header
                 //might not be used anymore
                 if (i == (csvFile.files.length - 1)) {
-                    //this should be done from the array representation
-                    //can be pulled from table_as_array
-                    names_string = data_str.shift()
-                    names_list = names_string.split(',')
-                    pkr = names_list.shift()
-                    header_row.push(pkr)
-                    //get the pkr value for each file
-                    for (line of data_str) {
-                        values = line.split(',')
-                        pkr_val = values.shift()
-                        header_row.push(pkr_val)
-                    }
-                    //these are two d arrays. For each row of the table, there
-                    //is an array of strings, where each string is one of the 
-                    //data fields from the file
                     data_array_rounded = round_numeric_values(data_array_unrounded)
                     data_array = data_array_unrounded
                 }
