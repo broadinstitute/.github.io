@@ -13,7 +13,7 @@
 <body>
     <!--get the csv files to pull data from-->
     <!--rename to input form everywhere-->
-    <form id="myForm"> 
+    <form id="csv_input_form"> 
         <input type="file" id="csvFile" accept=".csv" aria-label="csvFile" multiple="true"/>
         <br />
         <!--show the checkboxes of data to display-->
@@ -78,26 +78,20 @@
     //boolean for sorting direction, maybe dont need at this point
     ascending = true
     
-    //hold the contents of the file as a list of strings (change name to data_str)
-    data_str = []
-    
-    //array to hold the header of the input file (first row, names of data fields)
-    header_row = []
-    
     //(change name to data_array) - for rounded, unrounded, and transpose   
     //array to hold the contents of the file as a list of lists      
     data_array = []
     data_array_unrounded = []
     data_array_rounded = []
     data_array_transpose = []
-    const myForm = document.getElementById("myForm");
+    const csv_input_form = document.getElementById("csv_input_form");
     const csvFile = document.getElementById("csvFile");
     
     //read in the form submited by the user
-    myForm.addEventListener("submit", function (e, doc_text) {  
+    csv_input_form.addEventListener("submit", function (e, doc_text) {  
         e.preventDefault(); 
-        
         //read in the data from each file into a string
+        //maybe change to iterator if possible [mps]
         for (let i = 0; i < csvFile.files.length; i++) {
             file = csvFile.files[i]
             const reader = new FileReader();
@@ -111,7 +105,7 @@
                 /*break up one row of the csv into the first column (name) and
                   the second column (value)*/
                 //add comment about overall array and list_lines
-                  for (line of text_lines) {
+                for (line of text_lines) {
                     if (line) {
                         //seperate line of csv into name of field and field 
                         //itself

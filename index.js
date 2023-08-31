@@ -82,6 +82,7 @@ function write_table_headers(selected_fields, h_row, asc_or_dec_by_col) {
         indicies.push(idx_of_field)
         asc_or_dec_by_col.push(false)
     }
+    return indicies
 }
 
 //given an array of rows of the table, produce an array of columns of the
@@ -207,7 +208,7 @@ function display_data(selected_data, pkr_selected_data){
     //table to hold the direction for sorting of a column
     asc_or_dec_by_col = []
     //write all of the selected data fields as headers of the table
-    write_table_headers(selected_fields, h_row, asc_or_dec_by_col)
+    indicies = write_table_headers(selected_fields, h_row, asc_or_dec_by_col)
     for (pkr of data_array.slice(1)) {
         table_row = []
         for (index of indicies) {
