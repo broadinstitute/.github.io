@@ -12,6 +12,7 @@
 
 <body>
     <!--get the csv files to pull data from-->
+    <!--rename to input form everywhere-->
     <form id="myForm"> 
         <input type="file" id="csvFile" accept=".csv" aria-label="csvFile" multiple="true"/>
         <br />
@@ -72,20 +73,22 @@
         </div>
     </p>
 
+<!--should be included in index.js while still maintaing some global variables-->
 <script>
     //boolean for sorting direction, maybe dont need at this point
     ascending = true
     
-    //array to hold the contents of the file 
-    file_contents = []
+    //hold the contents of the file as a list of strings (change name to data_str)
+    data_str = []
     
     //array to hold the header of the input file (first row, names of data fields)
     header_row = []
     
-    //arrays for different forms of table
-    table_as_array_unrounded = []
-    table_as_array_rounded = []
-    table_as_array_transpose = []
+    //(change name to data_array) - for rounded, unrounded, and transpose   
+    //array to hold the contents of the file as a list of lists
+    data_array_unrounded = []
+    data_array_rounded = []
+    data_array_transpose = []
     const myForm = document.getElementById("myForm");
     const csvFile = document.getElementById("csvFile");
     
@@ -96,10 +99,8 @@
         /*create an array that, for each provided csv, has one list for the
           first column (names of fields) and one list for the second (values 
           of fields)*/ 
-        table_as_array_list = []
-        table_as_array = []
+        data_array = []
         overall_array = []
-        names_of_fields = ""
         for (let j = 0; j < csvFile.files.length; j++) {
             overall_array.push([[], []])
         }
@@ -113,13 +114,14 @@
                 /*break up string of all file contants by newline, so each 
                   member of text_lines is a row of the csv*/
                 const text_lines = text.split(/\r?\n/)
+                col_values = ""
+                col_keys = ""
+                col_keys_list = []
+                col_values_list = []
                 /*break up one row of the csv into the first column (name) and
                   the second column (value)*/
-                text_line = ""
-                names_of_fields = ""
-                list_line = []
-                names_of_fields_list = []
-                for (line of text_lines) {
+                //add comment about overall array and list_lines
+                  for (line of text_lines) {
                     if (line) {
                         //seperate line of csv into name of field and field 
                         //itself
@@ -127,36 +129,39 @@
                         overall_array[i][0].push(line_split[0])
                         overall_array[i][1].push(line_split[1])
                         //take all values from one file and make a string 
-                        text_line += line_split[1] + ','
-                        names_of_fields += line_split[0] + ','
+                        col_keys += line_split[0] + ','
+                        col_values += line_split[1] + ','
                         //take all values from one file and make an array
-                        list_line.push(line_split[1])
-                        names_of_fields_list.push(line_split[0])
-
+                        col_keys_list.push(line_split[0])
+                        col_values_list.push(line_split[1])
                     } 
                 }
                 //on fisrt iteration of loop, save the names of the data fields
                 //from the first file. This will populate the starting header, 
                 //and are assumed to be the same for each file
+                //move this inside for loop to only create on the first iteration
                 if (i == 0) {
-                    file_contents.push(names_of_fields)
-                    table_as_array_unrounded.push(names_of_fields_list)
+                    data_str.push(col_keys)
+                    data_array_unrounded.push(col_keys_list)
                 }
                 //save the string and list representations of the data from 
                 // the file
                 //substring here used to remove the , from the last part of the
                 //string
-                file_contents.push(text_line.substring(0, text_line.length - 1))
-                table_as_array_unrounded.push(list_line)
+                data_str.push(col_values.substring(0, col_values.length - 1))
+                data_array_unrounded.push(col_values_list)
                 //once all the files have been read in, populate global field
                 //for the table header
+                //might not be used anymore
                 if (i == (csvFile.files.length - 1)) {
-                    names_string = file_contents.shift()
+                    //this should be done from the array representation
+                    //can be pulled from table_as_array
+                    names_string = data_str.shift()
                     names_list = names_string.split(',')
                     pkr = names_list.shift()
                     header_row.push(pkr)
                     //get the pkr value for each file
-                    for (line of file_contents) {
+                    for (line of data_str) {
                         values = line.split(',')
                         pkr_val = values.shift()
                         header_row.push(pkr_val)
@@ -164,8 +169,8 @@
                     //these are two d arrays. For each row of the table, there
                     //is an array of strings, where each string is one of the 
                     //data fields from the file
-                    table_as_array_rounded = round_numeric_values(table_as_array_unrounded)
-                    table_as_array = table_as_array_unrounded
+                    data_array_rounded = round_numeric_values(data_array_unrounded)
+                    data_array = data_array_unrounded
                 }
             }
             reader.readAsText(file); 

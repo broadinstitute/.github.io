@@ -9,8 +9,8 @@ function write_checkboxes() {
     document.getElementById("filter_options").style.display = "block"
     names_of_fields = []
     new_all_rows = []
-    names_of_fields = table_as_array[0]
-    new_other_format = table_as_array.slice(1)
+    names_of_fields = data_array[0]
+    new_other_format = data_array.slice(1)
     for (i = 0; i < names_of_fields.length; i++) {
         let vals = []
         for (j = 0; j < new_other_format.length; j++) {
@@ -184,7 +184,7 @@ return new_array
 //data fields selected by the user
 function display_data(selected_data, pkr_selected_data){
     reset_display()
-    table_rounded = round_numeric_values(table_as_array_rounded)
+    table_rounded = round_numeric_values(data_array_rounded)
     //get contents from each checked checkbox
     const checked = document.querySelectorAll('input[name="' + selected_data +'"]:checked'), values = [];
     Array.prototype.forEach.call(checked, function(el) {
@@ -208,7 +208,7 @@ function display_data(selected_data, pkr_selected_data){
     asc_or_dec_by_col = []
     //write all of the selected data fields as headers of the table
     write_table_headers(selected_fields, h_row, asc_or_dec_by_col)
-    for (pkr of table_as_array.slice(1)) {
+    for (pkr of data_array.slice(1)) {
         table_row = []
         for (index of indicies) {
             table_row.push(pkr[index])
@@ -254,7 +254,7 @@ function toggle_round(table) {
     //the index in each row of the array where that value appears
     selected_indicies = []
     for (value of fields_values) {
-        selected_indicies.push(table_as_array_rounded[0].indexOf(value))
+        selected_indicies.push(data_array_rounded[0].indexOf(value))
     }
     table_body = table
     table_rows = table_body.querySelectorAll("tr")
@@ -263,12 +263,12 @@ function toggle_round(table) {
     //replace the table values with the rounded ones 
     if (values.length == 0) {
         for (table_row of table_rows) {
-            replace_numeric_values(table_row, table_as_array_unrounded, selected_indicies)
+            replace_numeric_values(table_row, data_array_unrounded, selected_indicies)
         }
     }
     else {
         for (table_row of table_rows) {
-            replace_numeric_values(table_row, table_as_array_rounded, selected_indicies)
+            replace_numeric_values(table_row, data_array_rounded, selected_indicies)
         }
     }
 }
@@ -330,17 +330,17 @@ function transpose_table(table) {
             table_array.push(row)
         }
         //set dimensions for transposed table 
-        table_as_array_transpose = []
+        data_array_transpose = []
         transpose_row_length = table_array.length
         transpose_col_length = table_array[0].length 
         //initialize transposed array
         for (j = 0; j < transpose_col_length; j++) {
-            table_as_array_transpose[j] = Array(transpose_row_length)
+            data_array_transpose[j] = Array(transpose_row_length)
         }
         //populate the transpose array
         for (i = 0; i < transpose_row_length; i++) {
             for (j = 0; j < transpose_col_length; j++) {
-                table_as_array_transpose[j][i] = table_array[i][j]
+                data_array_transpose[j][i] = table_array[i][j]
             }
         }
         //clear the old contents of the table
@@ -353,12 +353,12 @@ function transpose_table(table) {
         //write the new table from the arrays of td elements
         new_header = table.createTHead()
         h_row = new_header.insertRow()
-        transpose_header = table_as_array_transpose.shift()
+        transpose_header = data_array_transpose.shift()
         for (td of transpose_header) {
             h_row.appendChild(td)
         }
         new_body = table.createTBody()
-        for (tr of table_as_array_transpose) {
+        for (tr of data_array_transpose) {
             t_row = new_body.insertRow()
             for (td of tr) {
                 t_row.appendChild(td)
@@ -449,7 +449,7 @@ function color_by_mean () {
     //untounded for proper sorting
     if (values.length == 1) {
         for (table_row of rows) {
-            replace_numeric_values(table_row, table_as_array_unrounded, selected_indicies)
+            replace_numeric_values(table_row, data_array_unrounded, selected_indicies)
         }
     }
     table_header = table.tHead
@@ -510,7 +510,7 @@ function color_by_mean () {
             }
             if (values.length == 1) {
                 for (table_row of rows) {
-                    replace_numeric_values(table_row, table_as_array_rounded, selected_indicies)
+                    replace_numeric_values(table_row, data_array_rounded, selected_indicies)
                 }
             }
             return
@@ -557,14 +557,14 @@ function sort_table(table, column, asc) {
         
     selected_indicies = []
     for (value of fields_values) {
-        selected_indicies.push(table_as_array_rounded[0].indexOf(value))
+        selected_indicies.push(data_array_rounded[0].indexOf(value))
     }
     
     //if the rounded option is selected, replace the rounded values with the
     //untounded for proper sorting
     if (values.length == 1) {
         for (table_row of rows) {
-            replace_numeric_values(table_row, table_as_array_unrounded, selected_indicies)
+            replace_numeric_values(table_row, data_array_unrounded, selected_indicies)
         }
     }
     direction = asc ? 1 : -1
@@ -602,7 +602,7 @@ function sort_table(table, column, asc) {
     
     if (values.length == 1) {
         for (table_row of rows) {
-            replace_numeric_values(table_row, table_as_array_rounded, selected_indicies)
+            replace_numeric_values(table_row, data_array_rounded, selected_indicies)
         }
     }
 }
