@@ -77,7 +77,8 @@ function write_table_headers(selected_fields, h_row, asc_or_dec_by_col) {
         //by that row when clicked
         h_cell.onclick = function() {asc_or_dec_by_col = sort_and_flip(document.getElementById("data_table"), selected_fields.indexOf(this.textContent), asc_or_dec_by_col)}
         //add double click function that reverses red-green coloration
-        h_cell.ondblclick = function () {toggle_coloration(selected_fields.indexOf(this.textContent))}
+        //coloration flipping not fully hashed out, so getting comented out for now
+        //h_cell.ondblclick = function () {toggle_coloration(selected_fields.indexOf(this.textContent))}
         idx_of_field = names_of_fields.indexOf(selected_fields[field])
         indicies.push(idx_of_field)
         asc_or_dec_by_col.push(false)
@@ -220,6 +221,7 @@ function display_data(selected_data, pkr_selected_data){
     cols_of_table = make_table_columns(rows_of_table)
     normalized_columns = normalize_column_values(cols_of_table)
     for (table_row of rows_of_table) {
+        //check pkr of row to see if selected by user
         if (pkr_values.includes(table_row[0])) {
             new_row = body.insertRow()
             for (value of table_row) {
@@ -228,11 +230,9 @@ function display_data(selected_data, pkr_selected_data){
         }
     } 
     if (check_if_checked("round_nums")) {
-        console.log("need to round number")
         toggle_round(table)
     }
     if (check_if_checked("transpose")) {
-        console.log("need to transpose table")
         transpose_table(table)
     }
 }
@@ -385,7 +385,7 @@ function toggle_show() {
 //change the numbers in a row of the table with numbers from an array, 
 //used to write rounded/unrounded values saved in arrays into the main 
 //table 
-function replace_numeric_values(table_row, table_array, selected_indicies) {
+function replace_numeric_values(table_row, table_array) {
     pkr_id = table_row.querySelector("td").innerText
     //dont do anything if you are on the header of the table
     if (pkr_id == "PKR") {
@@ -430,6 +430,7 @@ function replace_numeric_values(table_row, table_array, selected_indicies) {
 //less, and the opacity reflects the magnitude of this difference
 function color_by_mean () {
     event.preventDefault()
+    console.log("in color by mean")
     document.getElementById("boxes").style.display = "none"
     filter_field = document.getElementById("data_field").value
     filter_value = document.getElementById("f_val").value
@@ -439,7 +440,6 @@ function color_by_mean () {
         return
     }
     table_body = table.tBodies[0]
-    console.log(table_body)
     rows = Array.from(table_body.querySelectorAll("tr"))
     const checked = document.querySelectorAll('input[name="round_nums"]:checked'), values = [];
         Array.prototype.forEach.call(checked, function(el) {
@@ -469,11 +469,10 @@ function color_by_mean () {
             //calcute z scores for all of the values in the selected column 
             //using the submitted mean 
             diff_squared_array = row_values.map((num) => Math.pow((num - filter_value), 2))
-            initial_val = 0
+=            initial_val = 0
             diff_squared_array_sum = diff_squared_array.reduce((running_sum, curr_value) => running_sum + curr_value, initial_val)
             std_dev = Math.sqrt(diff_squared_array_sum / row_values.length)
             z_score_array = row_values.map((num) => (num - filter_value) / std_dev)
-            console.log("z score array is " + z_score_array)
             //normalize the absolute values of the z-scores to create opacity
             //values
             z_score_array_abs = z_score_array.map((num) => (Math.abs(num)))
@@ -507,12 +506,8 @@ function color_by_mean () {
                     red_value = 0
                 }
                 opacity = opacity / 2
+                console.log("reseting the color")
                 row_td.style.backgroundColor = "rgba("+ green_value + "," + red_value + ", 0," + opacity + ")"
-            }
-            if (values.length == 1) {
-                for (table_row of rows) {
-                    replace_numeric_values(table_row, data_array_rounded, selected_indicies)
-                }
             }
             return
         }
@@ -677,6 +672,9 @@ function filter_column () {
 }
 
 //switch the coloration of a column between green and red
+//function does not work great with the changes in coloration that can happen
+//when sorting by mean, and can change background color of images, so for now
+//will not be used
 function toggle_coloration(col_idx) {
     table = document.getElementById("data_table")
     table_body = table.tBodies[0]

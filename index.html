@@ -91,7 +91,6 @@
     csv_input_form.addEventListener("submit", function (e, doc_text) {  
         e.preventDefault(); 
         //read in the data from each file into a string
-        //maybe change to iterator if possible [mps]
         for (let i = 0; i < csvFile.files.length; i++) {
             file = csvFile.files[i]
             const reader = new FileReader();
