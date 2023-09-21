@@ -130,8 +130,9 @@ function write_formated_table_cell(new_row, value, normalized_column, table_row,
         new_cell.innerHTML = NaN
         new_cell.style.backgroundColor = "rgba(0, 0, 225, " + .4 + ")"
     }
-    else if (value.slice(value.length - 3, value.length) == "png") {
-        new_cell.innerHTML = '<img src=" ' + value + '" width="100%"> </img>'
+    else if (value.includes("png")) {
+        let result = value.replace(/width="1000"/g, 'width="100%"');
+        new_cell.innerHTML = result
     }
     else if (value.slice(0, 5) == "https") {
         new_cell.innerHTML = '<img src=" ' + value + '" width="100%"> </img>'

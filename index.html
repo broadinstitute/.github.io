@@ -108,7 +108,7 @@
                     if (line) {
                         //seperate line of csv into name of field and field 
                         //itself
-                        const line_split = line.split(',')
+                        const line_split = line.split(/,(.*)/s)
                         col_keys_list.push(line_split[0])
                         col_values_list.push(line_split[1])
                     } 
